@@ -1,0 +1,105 @@
+%% Ievads simboliskaja matematika
+syms a b c d
+syms a2 b2 c2 d2
+A = [a b; c d];
+B = [a2 b2; c2 d2];
+C = A.*B
+%% 1.simbolisko mainigo definesana
+syms a b c d
+% seit tiek defineti simboliskie mainigie a b c d 
+A = [a b; c d];
+A'
+% definesim simboliskos mainigus kas nau kompleksi
+syms a b c d real
+A = [a b; c d];
+A'
+%% ka definet simboliskos mainigos 2 veids
+x = sym('x'); y =sym('y');
+y = sqrt(x^2)
+% definesim x ka tikai pozitivu mainigu
+x = sym('x', 'positive');
+y = sqrt(x^2)
+%% ka definet simboliskus mainigus 3 veids
+A = sym('a', [2 3])
+%% Atvasinasana
+syms x
+diff(x^2)
+y = x^2;
+diff(y)
+% sintakse
+% diff(atvasinama funkcija, pec ka atvasinat,cik reizes atvasinat)
+syms x y
+z = x^5*y^4
+diff(z,x)
+diff(z,y)
+z = x^5;
+diff(z,x,2)
+%% Integresana
+sym x
+int(x^2,x)
+% sintakse
+% int(integrejama funkcija, pec ka integret)
+%% Noteiktais integralis
+int(x,x,0,3)
+int(x^2,x,-3,3)
+%% Vienadojumu risinasana
+sym x
+% saknes bus 5 un 3
+% x^2-8*x+15=0
+% 1.pierakstu veids
+solve(x^2-8*x+15==0,x)
+syms s b c real
+solve(a*x^2+b*x+c==0,x)
+% 2.pierakstu veids(ko lietojavecakam matlaba versijam)
+solve(x^2-8*x+15,x)
+% rakstam tikai vienadojuma kreiso pusi, kreisaja puse ir jabut 0
+%% Vienadojumu sistemas
+% 1.pieraksta veids
+syms x y
+atb = solve(x-y==-2,x+y==6)
+% 2.pieraksta veids
+syms x y
+atb = solve(x-y+2, x+y-6)
+%% Izteiksmju vienkarsosana
+sym x
+y = (x-1)*(x-2)/((x-3)*(x-4));
+z = diff(y,x)
+simplify(z)
+%% citi vienadojumi
+syms x
+y = (x-3)*(x-5)
+z = expand(y)
+factor(z)
+horner(y)
+%% Citam metodem var skatities
+syms(x)
+methods(x)
+%% Robezas
+limit(1/(x-1),x,1,'left')
+limit(1/(x-1),x,1,'right')
+%% Simboliskas izsteiksmes uzzimesana
+y = 1/(x-1);
+ezplot(y)
+%% simboliskas izteiksmes uzzimesana, ta bus japilda laboratorijas darbs!
+% dots: f(x)=sqrt(x);
+% Atrast f'(x)-?
+% Uzzimet intervala [-3 3]
+% 1.definesim izteiksmi un atradisim atvasinajumu f'
+syms x
+y = sqrt(x);
+yd = diff(sqrt(x))
+% 2.definesim x ka skaitlu vektoru
+x = -3:0.01:3;
+% 3.izteiksmes vektorizacija (ieliksim "." pirms *,/,^)
+yv = vectorize(y)
+ydv = vectorize(yd)
+% 4.ieliksim x ka skaitlu vektoru
+yn = eval(yv)
+ydn = eval(ydv)
+% 5.uzzimesim grafiku
+plot(x,yn,x,ydn)
+% 6.pieliksim "skaistu" anotaciju grafikam
+yltx = latex(y)
+ydltx = latex(yd)
+h=legend(['$',yltx,'$'],['$',ydltx,'$'])
+set(h,'Interpreter','latex')
