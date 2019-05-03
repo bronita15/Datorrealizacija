@@ -33,6 +33,10 @@ y_saw = k*(t_saw-delay);
 %plot(t_saw,y_saw)
 %% Trokšņa signāls
 y_noise=0.5*rand(size(t_noise))-0.25;
+
+y_noise=0*t_noise;
+
+
 %plot(t_noise,y_noise)
 %% Konstantes signāls
 %y_const=0.5; nepareizi
