@@ -1,0 +1,81 @@
+function y=Lab3(t)
+if nargin==0
+    t=0:0.01:4.5;
+end
+%t_sin=0:0.01:1.5;
+t_sinf=(t>=0)&(t<1.5); t_sin=t(t_sinf);
+%t_zero=1.5:0.01:2;
+t_zerof=(t>=1.5)&(t<2); t_zero=t(t_zerof);
+%t_saw = 2:0.01:3;
+t_sawf=(t>=2)&(t<3); t_saw=t(t_sawf);
+%t_noise=3:0.01:3.5;
+t_noisef=(t>=3)&(t<3.5); t_noise=t(t_noisef);
+%t_const=3.5:0.01:4.5;
+t_constf=(t>=3.5)&(t<=4.5); t_const=t(t_constf);
+
+%% Gabal veida signāla montāža
+%% sinusoīda
+A0=0; A=0.5; T=(0.5-0)/2; f=1/T;
+delay=0;
+y_sin=A0+A*sin(2*pi*f*(t_sin-delay));
+%plot(t_sin,y_sin)
+%axis([0 4.5 -0.5 2]);
+% lai zimētu citus grafikus
+%hold on 
+%% Nuļļu signāls
+y_zero=0*ones(size(t_zero));
+%plot(t_zero,y_zero)
+%% lineāri mainīga funkcija
+%k = (yA-yB)/(tA-tB);
+k = (2-(-0))/(2-3);
+delay = 2+(2-0)/2; % vieta kur šķērso t
+y_saw = k*(t_saw-delay);
+%plot(t_saw,y_saw)
+%% Trokšņa signāls
+y_noise=0.5*rand(size(t_noise))-0.25;
+%plot(t_noise,y_noise)
+%% Konstantes signāls
+%y_const=0.5; nepareizi
+y_const=0.5*ones(size(t_const));
+%plot(t_const,y_const)
+%% signālu apvienošana
+%t=[t_sin, t_zero, t_saw, t_noise, t_const];
+y=[y_sin, y_zero, y_saw, y_noise, y_const];
+if nargout==0
+    plot(t,y); y=[];
+end
+
+
+%% 4. Labaratorijas darbs
+%% Daudzkonturu shemas simulacija
+R1=1; R2=2; R3=3; R4=4; R5=5; R6=6; R7=7; R8=8;
+G12=1/(R1+R2); G567=1/(R5+R6+R7); G8=1/(R8); G34=1/(R3+R4); 
+t = 0:0.01:4.5;
+E1 = 9;
+E2 = Lab3(t);
+J3 = sin(3*t);
+
+G = [G567+G12+G8 -(G8+G567)
+     -(G8+G567) G34+G567+G8];
+J = [J3-E1/(R1+R2)-E2/(R5+R6+R7); E2/(R5+R6+R7)];
+% Risinasim doto vienadojumu sistemu
+U = G\J;
+% Esam atradusi konturstravas
+% Ir jaatrod IR5 - ? IR4 - ? PR5 - ?
+Phi3 = U(2,:);
+Phi2 = U(1,:);
+I567 = Phi3-Phi2-E2/(R5+R6+R7);
+
+UR4_UR5 = -Phi3;
+
+IR5 = UR4_UR5/(R4+R5);
+PR5 = (IR5.^2)*R5;
+figure(1)
+plot(t,IR5,t,PR5)
+
+IR4 = (Phi3-0)/(R3+R4);
+
+Itst = IR4-IR5+J3;
+figure(2)
+plot(t,Itst)
+
