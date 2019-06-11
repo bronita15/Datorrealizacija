@@ -1,0 +1,42 @@
+function y=Lab3(t)
+if nargin==0    
+    t=0:0.01:4.5; 
+end
+%t_sin=0:0.01:1.5; 
+t_sinf=(t>=0)&(t<1.5); t_sin=t(t_sinf); 
+%t_zero=1.5:0.01:2; 
+t_zerof=(t>=1.5)&(t<2); t_zero=t(t_zerof); 
+%t_saw = 2:0.01:3; 
+t_sawf=(t>=2)&(t<3); t_saw=t(t_sawf); 
+%t_noise=3:0.01:3.5; 
+t_noisef=(t>=3)&(t<3.5); t_noise=t(t_noisef); 
+%t_const=3.5:0.01:4.5; 
+t_constf=(t>=3.5)&(t<=4.5); t_const=t(t_constf);
+%% Gabalveida signala montaza sinusoida
+A0=0; A=0.5; T=(0.5-0)/2; f=1/T; 
+delay=0; y_sin=A0+A*sin(2*pi*f*(t_sin-delay)); 
+%plot(t_sin,y_sin) 
+%axis([0 4.5 -0.5 2]); 
+% lai zimetu citus grafikus %hold on
+%% Nulles signals
+y_zero=0*ones(size(t_zero)); 
+%plot(t_zero,y_zero)
+%% Lineari mainiga funkcija
+%k = (yA-yB)/(tA-tB);
+k = (2-(-0))/(2-3); delay = 2+(2-0)/2; 
+% vieta kur skerso t 
+y_saw = k*(t_saw-delay); 
+%plot(t_saw,y_saw)
+%% Troksna signals
+y_noise=0.5*rand(size(t_noise))-0.25; 
+%plot(t_noise,y_noise)
+%% Konstantes signals
+%y_const=0.5; nepareizi 
+y_const=0.5*ones(size(t_const)); 
+%plot(t_const,y_const)
+%% Signalu apvienosana
+%t=[t_sin, t_zero, t_saw, t_noise, t_const]; 
+y=[y_sin, y_zero, y_saw, y_noise, y_const]; 
+if nargout==0    
+    plot(t,y); y=[]; 
+end
